@@ -115,6 +115,30 @@ const options = {
   year: "numeric",
 };
 
+//SET TIMER FUNCTION
+const startLogoutTimer = function () {
+  //set time
+  let clock = 10;
+
+  const logoutTimer = setInterval(() => {
+    //-1 second after each second passes
+    const min = String(Math.trunc(clock / 60)).padStart(2, "0");
+    const sec = String(Math.trunc(clock % 60)).padStart(2, "0");
+
+    labelTimer.textContent = `${min}:${sec}`;
+    clock--;
+    console.log(clock);
+
+    //stop timer and logout when time reaches 0
+    if (clock === 0) {
+      clearInterval(logoutTimer);
+
+      labelWelcome.textContent = `Log in to get started`;
+      containerApp.style.opacity = "0";
+    }
+  }, 1000);
+};
+
 //NUMBER FORMATTER
 const numberFormat = function (number, locale, currency) {
   return new Intl.NumberFormat(locale, { style: "currency", currency: currency }).format(number);
@@ -252,6 +276,9 @@ btnLogin.addEventListener("click", function (event) {
 
   //update UI
   updateUi(currentAccount);
+
+  //start logout timer
+  startLogoutTimer();
 
   //make the background of every second movement row a darker shade of white
   document.querySelectorAll(".movements__row").forEach(function (element, index) {
